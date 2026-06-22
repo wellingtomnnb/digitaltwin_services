@@ -11,7 +11,7 @@ Blueprint de deploy do projeto no Render.
 
 ## Como usar
 
-No Render, crie um projeto via Blueprint apontando para `render/render.yaml`.
+No Render, crie um projeto via Blueprint apontando para `render.yaml` na raiz do repositorio.
 
 ## Observacoes
 

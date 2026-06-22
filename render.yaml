@@ -1,0 +1,71 @@
+services:
+  - type: web
+    name: digitaltwin-streamlit
+    env: docker
+    rootDir: .
+    dockerfilePath: streamlit/Dockerfile
+    healthCheckPath: /
+    plan: starter
+    envVars:
+      - key: FIREBASE_HOST
+        value: https://digitaltwim-default-rtdb.firebaseio.com
+      - key: FIREBASE_COLLECTION
+        value: digital_twin_dinamico_rev1
+      - key: RUNTIME_CONFIG_PATH
+        value: digital_twin_runtime_config/prediction
+      - key: METRICS_API_URL
+        value: http://digitaltwin-metrics:10000
+      - key: FETCH_LIMIT
+        value: "300"
+      - key: APP_TIMEZONE
+        value: America/Sao_Paulo
+
+  - type: pserv
+    name: digitaltwin-metrics
+    env: docker
+    rootDir: .
+    dockerfilePath: api/Dockerfile.metrics
+    plan: starter
+    envVars:
+      - key: FIREBASE_HOST
+        value: https://digitaltwim-default-rtdb.firebaseio.com
+      - key: FIREBASE_COLLECTION
+        value: digital_twin_dinamico_rev1
+      - key: RUNTIME_CONFIG_PATH
+        value: digital_twin_runtime_config/prediction
+
+  - type: pserv
+    name: digitaltwin-predictor
+    env: docker
+    rootDir: .
+    dockerfilePath: api/Dockerfile
+    plan: starter
+    envVars:
+      - key: FIREBASE_HOST
+        value: https://digitaltwim-default-rtdb.firebaseio.com
+      - key: FIREBASE_COLLECTION
+        value: digital_twin_dinamico_rev1
+      - key: RUNTIME_CONFIG_PATH
+        value: digital_twin_runtime_config/prediction
+
+  - type: worker
+    name: digitaltwin-trigger
+    env: docker
+    rootDir: .
+    dockerfilePath: trigger/Dockerfile
+    plan: starter
+    envVars:
+      - key: FIREBASE_HOST
+        value: https://digitaltwim-default-rtdb.firebaseio.com
+      - key: FIREBASE_COLLECTION
+        value: digital_twin_dinamico_rev1
+      - key: RUNTIME_CONFIG_PATH
+        value: digital_twin_runtime_config/prediction
+      - key: PREDICTOR_URL
+        value: http://digitaltwin-predictor:10000/predict
+      - key: HORIZON_STEPS
+        value: "10"
+      - key: POLL_INTERVAL_SECONDS
+        value: "2"
+      - key: FETCH_LIMIT
+        value: "300"

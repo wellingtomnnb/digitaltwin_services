@@ -32,6 +32,24 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/")
+def root() -> dict[str, object]:
+    """Mostra as rotas principais quando a raiz do servico for acessada."""
+    return {
+        "service": "Digital Twin Metrics API",
+        "status": "ok",
+        "routes": {
+            "health": "GET /health",
+            "summary": "GET /metrics/summary",
+            "control": "GET /metrics/control",
+            "process": "GET /metrics/process",
+            "timing": "GET /metrics/timing",
+            "duty_cycle": "GET /metrics/duty-cycle",
+            "dashboard": "GET /metrics/dashboard",
+        },
+    }
+
+
 @app.get("/metrics/summary")
 def summary(
     timestamp: datetime | None = Query(default=None, description="Timestamp de referência"),

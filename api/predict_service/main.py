@@ -35,6 +35,18 @@ def health() -> dict[str, str]:
     return {"status": "ok"}
 
 
+@app.get("/")
+def root() -> dict[str, object]:
+    return {
+        "service": "Digital Twin Predict API",
+        "status": "ok",
+        "routes": {
+            "health": "GET /health",
+            "predict": "POST /predict?horizon_steps=10",
+        },
+    }
+
+
 @app.post("/predict", response_model=PredictionResponse)
 def predict(
     request_body: PredictionRequest,
@@ -55,4 +67,3 @@ def predict(
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except PredictorError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc
-

@@ -6,7 +6,7 @@ Monorepo do sistema de controle e acompanhamento térmico.
 
 - `arduino/`: firmware do ESP32 que coleta sensores e envia dados ao Firebase.
 - `api/`: API FastAPI para predicao e metricas.
-- `webhook/`: espaco para integracoes por evento.
+- `trigger/`: processo interno que atualiza registros do Firebase com previsoes.
 - `streamlit/`: painel de relatorios.
 
 ## Execucao
@@ -19,10 +19,11 @@ docker compose up --build
 
 - API de predicao: `http://localhost:8000`
 - API de metricas: `http://localhost:8001`
+- Trigger: container interno sem porta publica.
 
 ## Documentacao
 
 - [Arduino](arduino/README.md)
 - [API](api/README.md)
-- [Webhook](webhook/README.md)
+- [Trigger](trigger/README.md)
 - [Streamlit](streamlit/README.md)

@@ -39,3 +39,6 @@ streamlit/.streamlit/credentials.toml
 *.log
 tmp/
 temp/
+
+# Local runtime data
+trigger/data/

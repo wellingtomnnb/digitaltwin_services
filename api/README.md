@@ -15,6 +15,29 @@ Para rodar a partir da raiz do projeto:
 docker compose up --build
 ```
 
+## Deploy no Render
+
+No Render, configure o servico da API com:
+
+- `Root Directory`: deixe vazio, usando a raiz do repositorio.
+- `Dockerfile Path`: `api/Dockerfile`.
+
+O Dockerfile foi preparado para build a partir da raiz do repositorio. Por isso ele copia `api/app`, `api/predict_service`, `api/metrics_service` e `api/data`.
+
+Para subir a API de predicao, use:
+
+- `Dockerfile Path`: `api/Dockerfile`.
+
+Para subir a API de metricas como outro servico, use:
+
+- `Dockerfile Path`: `api/Dockerfile.metrics`.
+
+Como alternativa, tambem e possivel usar `api/Dockerfile` e sobrescrever o start command:
+
+```bash
+sh -c 'uvicorn metrics_service.main:app --host 0.0.0.0 --port ${PORT:-8001} --workers 1'
+```
+
 ## Predicao
 
 Rotas:

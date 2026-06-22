@@ -11,6 +11,7 @@ from urllib.request import urlopen
 
 import joblib
 import pandas as pd
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 
 from app.core.config import (
@@ -67,6 +68,10 @@ class DigitalTwinPredictor:
         """Carrega modelo, scalers e o passo temporal inferido no Firebase."""
         if self.artifacts is not None:
             return
+
+        # Mantem o TensorFlow mais previsivel em containers pequenos.
+        tf.config.threading.set_intra_op_parallelism_threads(1)
+        tf.config.threading.set_inter_op_parallelism_threads(1)
 
         model_path = self._prepare_model_path()
         model = load_model(str(model_path), compile=False)

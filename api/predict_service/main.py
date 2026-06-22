@@ -2,10 +2,11 @@ from contextlib import asynccontextmanager
 
 from fastapi import FastAPI, HTTPException, Query, Request
 
-from app.schemas.prediction import PredictionRequest, PredictionResponse
+from app.schemas.prediction import EvaluationResponse, PredictionRequest, PredictionResponse
 from app.services.predictor import (
     DigitalTwinPredictor,
     InsufficientHistoryError,
+    InsufficientFutureDataError,
     PredictorError,
     TimestampNotFoundError,
 )
@@ -43,6 +44,7 @@ def root() -> dict[str, object]:
         "routes": {
             "health": "GET /health",
             "predict": "POST /predict?horizon_steps=10",
+            "evaluate": "POST /evaluate?horizon_steps=10",
         },
     }
 
@@ -64,6 +66,30 @@ def predict(
     except TimestampNotFoundError as exc:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except InsufficientHistoryError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except PredictorError as exc:
+        raise HTTPException(status_code=500, detail=str(exc)) from exc
+
+
+@app.post("/evaluate", response_model=EvaluationResponse)
+def evaluate(
+    request_body: PredictionRequest,
+    request: Request,
+    horizon_steps: int = Query(
+        default=10,
+        ge=1,
+        description="Quantidade de passos à frente para a avaliação",
+    ),
+) -> EvaluationResponse:
+    predictor = request.app.state.predictor
+
+    try:
+        return predictor.evaluate(request_body, horizon_steps)
+    except TimestampNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except InsufficientHistoryError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except InsufficientFutureDataError as exc:
         raise HTTPException(status_code=400, detail=str(exc)) from exc
     except PredictorError as exc:
         raise HTTPException(status_code=500, detail=str(exc)) from exc

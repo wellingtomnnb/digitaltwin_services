@@ -24,6 +24,6 @@ COPY api/predict_service ./predict_service
 COPY api/metrics_service ./metrics_service
 COPY api/data ./data
 
-EXPOSE 8000
+EXPOSE 10000
 
-CMD ["sh", "-c", "uvicorn predict_service.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]
+CMD ["sh", "-c", "uvicorn predict_service.main:app --host 0.0.0.0 --port ${PORT:-10000} --workers 1"]

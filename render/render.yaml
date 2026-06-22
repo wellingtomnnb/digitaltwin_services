@@ -14,7 +14,7 @@ services:
       - key: RUNTIME_CONFIG_PATH
         value: digital_twin_runtime_config/prediction
       - key: METRICS_API_URL
-        value: http://digitaltwin-metrics:8001
+        value: http://digitaltwin-metrics:10000
       - key: FETCH_LIMIT
         value: "300"
       - key: APP_TIMEZONE
@@ -62,7 +62,7 @@ services:
       - key: RUNTIME_CONFIG_PATH
         value: digital_twin_runtime_config/prediction
       - key: PREDICTOR_URL
-        value: http://digitaltwin-predictor:8000/predict
+        value: http://digitaltwin-predictor:10000/predict
       - key: HORIZON_STEPS
         value: "10"
       - key: POLL_INTERVAL_SECONDS

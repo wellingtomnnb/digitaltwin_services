@@ -35,7 +35,7 @@ Para subir a API de metricas como outro servico, use:
 Como alternativa, tambem e possivel usar `api/Dockerfile` e sobrescrever o start command:
 
 ```bash
-sh -c 'uvicorn metrics_service.main:app --host 0.0.0.0 --port ${PORT:-8001} --workers 1'
+sh -c 'uvicorn metrics_service.main:app --host 0.0.0.0 --port ${PORT:-10000} --workers 1'
 ```
 
 ## Predicao

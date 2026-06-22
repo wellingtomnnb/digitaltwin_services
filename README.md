@@ -8,6 +8,7 @@ Monorepo do sistema de controle e acompanhamento térmico.
 - `api/`: API FastAPI para predicao e metricas.
 - `trigger/`: processo interno que atualiza registros do Firebase com previsoes.
 - `streamlit/`: painel de relatorios.
+- `render/`: blueprint de deploy no Render.
 
 ## Execucao
 
@@ -24,9 +25,12 @@ Para desenvolvimento local, o `docker-compose.yml` sobe os servicos com volume m
 - Trigger: container interno sem porta publica.
 - Streamlit: `http://localhost:8501`
 
+No Render, a API de metricas continua ativa como servico privado, consumido pelo Streamlit pela rede interna.
+
 ## Documentacao
 
 - [Arduino](arduino/README.md)
 - [API](api/README.md)
 - [Trigger](trigger/README.md)
 - [Streamlit](streamlit/README.md)
+- [Render](render/README.md)

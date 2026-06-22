@@ -4,6 +4,8 @@ Painel de relatorios em tempo quase real.
 
 O painel consome o historico diretamente do Firebase, incluindo a chave `prediction` criada pelo container `trigger`. Ele tambem tenta usar a API de metricas para preencher os cartoes derivados; se a API estiver indisponivel, calcula um resumo simples localmente.
 
+No Render, a API de metricas pode ficar desativada no painel. Quando `METRICS_API_URL` estiver vazia, o Streamlit usa somente os calculos locais e continua funcionando normalmente.
+
 A area principal do dashboard e atualizada automaticamente usando `st.fragment`, sem recarregar a pagina inteira. O intervalo padrao e 5 segundos, e o usuario pode trocar na lateral para 5, 15, 30 ou 60 segundos.
 
 ## Execucao

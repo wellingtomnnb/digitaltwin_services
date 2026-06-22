@@ -18,7 +18,7 @@ import streamlit as st
 FIREBASE_HOST = os.getenv("FIREBASE_HOST", "https://digitaltwim-default-rtdb.firebaseio.com").rstrip("/")
 FIREBASE_COLLECTION = os.getenv("FIREBASE_COLLECTION", "digital_twin_dinamico_rev1").strip("/")
 RUNTIME_CONFIG_PATH = os.getenv("RUNTIME_CONFIG_PATH", "digital_twin_runtime_config/prediction").strip("/")
-METRICS_API_URL = os.getenv("METRICS_API_URL", "http://localhost:8001").rstrip("/")
+METRICS_API_URL = os.getenv("METRICS_API_URL", "").rstrip("/")
 DEFAULT_FETCH_LIMIT = int(os.getenv("FETCH_LIMIT", "300"))
 LOCAL_TIMEZONE = ZoneInfo(os.getenv("APP_TIMEZONE", "America/Sao_Paulo"))
 REFRESH_OPTIONS = {
@@ -249,6 +249,9 @@ def update_runtime_config(horizon_steps: int) -> None:
 @st.cache_data(ttl=1, show_spinner=False)
 def fetch_metrics_dashboard(lookback_samples: int) -> dict[str, object] | None:
     """Tenta usar a API de metricas para os indicadores derivados."""
+    if not METRICS_API_URL:
+        return None
+
     url = f"{METRICS_API_URL}/metrics/dashboard?{urlencode({'lookback_samples': lookback_samples})}"
     try:
         with urlopen(url, timeout=5) as response:

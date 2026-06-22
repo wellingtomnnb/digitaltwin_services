@@ -1,3 +1,17 @@
+envVarGroups:
+  - name: digitaltwin-common
+    envVars:
+      - key: TZ
+        value: America/Sao_Paulo
+      - key: APP_TIMEZONE
+        value: America/Sao_Paulo
+      - key: FIREBASE_HOST
+        value: https://digitaltwim-default-rtdb.firebaseio.com
+      - key: FIREBASE_COLLECTION
+        value: digital_twin_dinamico_rev1
+      - key: RUNTIME_CONFIG_PATH
+        value: digital_twin_runtime_config/prediction
+
 services:
   - type: web
     name: digitaltwin-streamlit
@@ -7,18 +21,11 @@ services:
     healthCheckPath: /
     plan: starter
     envVars:
-      - key: FIREBASE_HOST
-        value: https://digitaltwim-default-rtdb.firebaseio.com
-      - key: FIREBASE_COLLECTION
-        value: digital_twin_dinamico_rev1
-      - key: RUNTIME_CONFIG_PATH
-        value: digital_twin_runtime_config/prediction
+      - fromGroup: digitaltwin-common
       - key: METRICS_API_URL
         value: http://digitaltwin-metrics:10000
       - key: FETCH_LIMIT
         value: "300"
-      - key: APP_TIMEZONE
-        value: America/Sao_Paulo
 
   - type: pserv
     name: digitaltwin-metrics
@@ -27,12 +34,7 @@ services:
     dockerfilePath: api/Dockerfile.metrics
     plan: starter
     envVars:
-      - key: FIREBASE_HOST
-        value: https://digitaltwim-default-rtdb.firebaseio.com
-      - key: FIREBASE_COLLECTION
-        value: digital_twin_dinamico_rev1
-      - key: RUNTIME_CONFIG_PATH
-        value: digital_twin_runtime_config/prediction
+      - fromGroup: digitaltwin-common
 
   - type: pserv
     name: digitaltwin-predictor
@@ -41,12 +43,7 @@ services:
     dockerfilePath: api/Dockerfile
     plan: starter
     envVars:
-      - key: FIREBASE_HOST
-        value: https://digitaltwim-default-rtdb.firebaseio.com
-      - key: FIREBASE_COLLECTION
-        value: digital_twin_dinamico_rev1
-      - key: RUNTIME_CONFIG_PATH
-        value: digital_twin_runtime_config/prediction
+      - fromGroup: digitaltwin-common
 
   - type: worker
     name: digitaltwin-trigger
@@ -55,12 +52,7 @@ services:
     dockerfilePath: trigger/Dockerfile
     plan: starter
     envVars:
-      - key: FIREBASE_HOST
-        value: https://digitaltwim-default-rtdb.firebaseio.com
-      - key: FIREBASE_COLLECTION
-        value: digital_twin_dinamico_rev1
-      - key: RUNTIME_CONFIG_PATH
-        value: digital_twin_runtime_config/prediction
+      - fromGroup: digitaltwin-common
       - key: PREDICTOR_URL
         value: http://digitaltwin-predictor:10000/predict
       - key: HORIZON_STEPS

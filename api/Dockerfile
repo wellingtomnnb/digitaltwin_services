@@ -11,14 +11,14 @@ RUN apt-get update \
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY api/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY app ./app
-COPY predict_service ./predict_service
-COPY metrics_service ./metrics_service
-COPY data ./data
+COPY api/app ./app
+COPY api/predict_service ./predict_service
+COPY api/metrics_service ./metrics_service
+COPY api/data ./data
 
 EXPOSE 8000
 
-CMD ["uvicorn", "predict_service.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+CMD ["sh", "-c", "uvicorn predict_service.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1"]

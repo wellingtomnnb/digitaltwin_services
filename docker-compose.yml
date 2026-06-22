@@ -1,6 +1,8 @@
 services:
   predictor:
-    build: ./api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     ports:
       - "8000:8000"
     healthcheck:
@@ -11,7 +13,9 @@ services:
       start_period: 30s
 
   metrics:
-    build: ./api
+    build:
+      context: .
+      dockerfile: api/Dockerfile
     command: uvicorn metrics_service.main:app --host 0.0.0.0 --port 8001 --workers 1
     ports:
       - "8001:8001"
@@ -21,3 +25,18 @@ services:
       timeout: 5s
       retries: 3
       start_period: 30s
+
+  trigger:
+    build:
+      context: .
+      dockerfile: trigger/Dockerfile
+    depends_on:
+      predictor:
+        condition: service_healthy
+    environment:
+      FIREBASE_HOST: https://digitaltwim-default-rtdb.firebaseio.com
+      FIREBASE_COLLECTION: digital_twin_dinamico_rev1
+      PREDICTOR_URL: http://predictor:8000/predict
+      HORIZON_STEPS: 10
+      POLL_INTERVAL_SECONDS: 2
+      FETCH_LIMIT: 30

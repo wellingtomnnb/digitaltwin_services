@@ -1,8 +1,16 @@
+x-firebase-environment: &firebase-environment
+  FIREBASE_HOST: https://digitaltwim-default-rtdb.firebaseio.com
+  FIREBASE_COLLECTION: digital_twin_dinamico_rev1
+  RUNTIME_CONFIG_PATH: digital_twin_runtime_config/prediction
+
 services:
   predictor:
     build:
       context: .
       dockerfile: api/Dockerfile
+    command: uvicorn predict_service.main:app --host 0.0.0.0 --port 8000 --workers 1 --reload --reload-dir /app
+    volumes:
+      - ./api:/app
     ports:
       - "8000:8000"
     healthcheck:
@@ -16,6 +24,9 @@ services:
     build:
       context: .
       dockerfile: api/Dockerfile.metrics
+    command: uvicorn metrics_service.main:app --host 0.0.0.0 --port 8001 --workers 1 --reload --reload-dir /app
+    volumes:
+      - ./api:/app
     ports:
       - "8001:8001"
     healthcheck:
@@ -29,13 +40,33 @@ services:
     build:
       context: .
       dockerfile: trigger/Dockerfile
+    command: watchfiles "python -m trigger_worker.main" /app/trigger_worker
+    volumes:
+      - ./trigger:/app
     depends_on:
       predictor:
         condition: service_healthy
     environment:
-      FIREBASE_HOST: https://digitaltwim-default-rtdb.firebaseio.com
-      FIREBASE_COLLECTION: digital_twin_dinamico_rev1
+      <<: *firebase-environment
       PREDICTOR_URL: http://predictor:8000/predict
       HORIZON_STEPS: 10
       POLL_INTERVAL_SECONDS: 2
-      FETCH_LIMIT: 30
+      FETCH_LIMIT: 300
+
+  streamlit:
+    build:
+      context: .
+      dockerfile: streamlit/Dockerfile
+    command: streamlit run app.py --server.address=0.0.0.0 --server.port=8501
+    volumes:
+      - ./streamlit:/app
+    depends_on:
+      metrics:
+        condition: service_healthy
+    ports:
+      - "8501:8501"
+    environment:
+      <<: *firebase-environment
+      METRICS_API_URL: http://metrics:8001
+      FETCH_LIMIT: 300
+      APP_TIMEZONE: America/Sao_Paulo

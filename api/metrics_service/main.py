@@ -21,7 +21,7 @@ app = FastAPI(
     description="Serviço isolado de métricas do controlador.",
     docs_url='/tests',
     redoc_url=None,
-    openapi_url=None,
+    openapi_url="/openapi.json",
     lifespan=lifespan,
 )
 

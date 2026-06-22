@@ -183,7 +183,8 @@ class DigitalTwinPredictor:
         )
 
         window = pd.concat([history, current_row], ignore_index=True)
-        features = window[self.artifacts.columns]
+        # O scaler foi treinado sem nomes de colunas, entao enviamos apenas a matriz numerica.
+        features = window[self.artifacts.columns].to_numpy()
 
         scaled = self.artifacts.x_scaler.transform(features)
         scaled = scaled.reshape(1, WINDOW_SIZE, len(self.artifacts.columns))

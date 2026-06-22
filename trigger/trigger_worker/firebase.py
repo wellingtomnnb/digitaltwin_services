@@ -35,6 +35,15 @@ class FirebaseClient:
                 records.append((key, value))
         return records
 
+    def get_path(self, path: str) -> dict[str, object] | None:
+        """Le um no arbitrario do Firebase usado para configuracoes simples."""
+        url = f"{self.host}/{path.strip('/')}.json"
+        with urlopen(url, timeout=10) as response:
+            raw = response.read().decode("utf-8")
+
+        payload = json.loads(raw) if raw else None
+        return payload if isinstance(payload, dict) else None
+
     def patch_record(self, key: str, payload: dict[str, object]) -> None:
         """Atualiza apenas os campos derivados, preservando os dados coletados."""
         url = f"{self.host}/{self.collection}/{quote(key, safe='')}.json"

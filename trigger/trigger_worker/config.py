@@ -15,6 +15,7 @@ class Settings:
     poll_interval_seconds: float
     fetch_limit: int
     prediction_field: str
+    runtime_config_path: str
 
     @classmethod
     def from_env(cls) -> "Settings":
@@ -36,4 +37,8 @@ class Settings:
             poll_interval_seconds=float(os.getenv("POLL_INTERVAL_SECONDS", "2")),
             fetch_limit=int(os.getenv("FETCH_LIMIT", "30")),
             prediction_field=os.getenv("PREDICTION_FIELD", "prediction"),
+            runtime_config_path=os.getenv(
+                "RUNTIME_CONFIG_PATH",
+                "digital_twin_runtime_config/prediction",
+            ),
         )

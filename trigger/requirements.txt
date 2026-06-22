@@ -1,1 +1,1 @@
-
+watchfiles==0.24.0

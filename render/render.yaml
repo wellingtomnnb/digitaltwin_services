@@ -54,7 +54,6 @@ services:
     rootDir: .
     dockerfilePath: trigger/Dockerfile
     plan: starter
-    startCommand: python -m trigger_worker.main
     envVars:
       - key: FIREBASE_HOST
         value: https://digitaltwim-default-rtdb.firebaseio.com

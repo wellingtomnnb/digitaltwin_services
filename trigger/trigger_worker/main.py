@@ -66,6 +66,9 @@ class PredictorClient:
 class FirebasePredictionTrigger:
     """Processo continuo que preenche previsoes em novos registros do Firebase."""
 
+    MAX_PREDICTIONS_PER_CYCLE = 40
+    MAX_EVALUATIONS_PER_CYCLE = 15
+
     def __init__(self, settings: Settings) -> None:
         self.settings = settings
         self.firebase = FirebaseClient(settings.firebase_host, settings.firebase_collection)
@@ -116,6 +119,11 @@ class FirebasePredictionTrigger:
 
         # Prioriza registros novos sem previsao para que o Firebase fique atualizado
         # o mais cedo possivel; as avaliacoes de registros antigos ficam por ultimo.
+        if len(pending_predictions) > self.MAX_PREDICTIONS_PER_CYCLE:
+            pending_predictions = pending_predictions[-self.MAX_PREDICTIONS_PER_CYCLE :]
+        if len(pending_evaluations) > self.MAX_EVALUATIONS_PER_CYCLE:
+            pending_evaluations = pending_evaluations[-self.MAX_EVALUATIONS_PER_CYCLE :]
+
         for firebase_key, record, payload in reversed(pending_predictions):
             try:
                 prediction = self.predictor.predict(payload, horizon_steps)

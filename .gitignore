@@ -1,0 +1,41 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+dist/
+build/
+
+# Virtual environments
+venv/
+.venv/
+env/
+.env/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+serviceAccount*.json
+firebase-adminsdk*.json
+
+# IDE and OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Streamlit
+streamlit/.streamlit/secrets.toml
+streamlit/.streamlit/credentials.toml
+
+# Runtime logs and temporary files
+*.log
+tmp/
+temp/

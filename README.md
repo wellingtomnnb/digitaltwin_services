@@ -15,11 +15,14 @@ Monorepo do sistema de controle e acompanhamento térmico.
 docker compose up --build
 ```
 
+Para desenvolvimento local, o `docker-compose.yml` sobe os servicos com volume montado e recarga automatica. Assim, editar arquivos em `api/`, `trigger/` ou `streamlit/` reflete sem rebuild e sem reiniciar na mao.
+
 ## Servicos
 
 - API de predicao: `http://localhost:8000`
 - API de metricas: `http://localhost:8001`
 - Trigger: container interno sem porta publica.
+- Streamlit: `http://localhost:8501`
 
 ## Documentacao
 

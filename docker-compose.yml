@@ -15,8 +15,7 @@ services:
   metrics:
     build:
       context: .
-      dockerfile: api/Dockerfile
-    command: uvicorn metrics_service.main:app --host 0.0.0.0 --port 8001 --workers 1
+      dockerfile: api/Dockerfile.metrics
     ports:
       - "8001:8001"
     healthcheck:

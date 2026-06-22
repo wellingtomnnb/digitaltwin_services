@@ -22,7 +22,7 @@ docker compose up --build
 
 ## Documentacao
 
-- [Arduino](/home/wellington/Documentos/digitaltwin_api/arduino/README.md)
-- [API](/home/wellington/Documentos/digitaltwin_api/api/README.md)
-- [Webhook](/home/wellington/Documentos/digitaltwin_api/webhook/README.md)
-- [Streamlit](/home/wellington/Documentos/digitaltwin_api/streamlit/README.md)
+- [Arduino](arduino/README.md)
+- [API](api/README.md)
+- [Webhook](webhook/README.md)
+- [Streamlit](streamlit/README.md)

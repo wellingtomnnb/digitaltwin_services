@@ -2,6 +2,8 @@
 
 Monorepo do sistema de controle e acompanhamento térmico.
 
+![Arquitetura do Digital Twin Services](architecture_diagram.png)
+
 ## Visao Geral
 
 - `arduino/`: firmware do ESP32 que coleta sensores e envia dados ao Firebase.
